@@ -1,0 +1,439 @@
+﻿
+> Samantrix@0.0.1 build
+> nest build
+
+node.exe : [96msrc/e
+mail/email.module.ts
+[0m:[93m3[0m:[93m3
+3[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'./email.controller' 
+or its corresponding 
+type declarations.
+At C:\Program Files\n
+odejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ([96msr   
+ c/email/...e dec    
+larations.:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+[7m3[0m import { 
+EmailController } 
+from 
+'./email.controller';
+[7m [0m [91m      
+                     
+     ~~~~~~~~~~~~~~~~
+~~~~[0m
+[96msrc/email/email.
+module.ts[0m:[93m4
+[0m:[93m32[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m4[0m import { 
+MongooseModule } 
+from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+    ~~~~~~~~~~~~~~~~~
+~[0m
+[96msrc/email/email.
+service.ts[0m:[93m7
+[0m:[93m22[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@sendgrid/mail' or 
+its corresponding 
+type declarations.
+
+[7m7[0m import 
+SendGrid from 
+'@sendgrid/mail';
+[7m [0m [91m      
+               
+~~~~~~~~~~~~~~~~[0m
+[96msrc/email/email.
+service.ts[0m:[93m8
+[0m:[93m29[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'nodemailer' or its 
+corresponding type 
+declarations.
+
+[7m8[0m import * 
+as nodemailer from 
+'nodemailer';
+[7m [0m [91m      
+                     
+ ~~~~~~~~~~~~[0m
+[96msrc/email/email.
+service.ts[0m:[93m1
+1[0m:[93m29[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m11[0m import { 
+InjectModel } from 
+'@nestjs/mongoose';
+[7m  [0m [91m     
+                     
+  ~~~~~~~~~~~~~~~~~~
+[0m
+[96msrc/email/email.
+service.ts[0m:[93m1
+2[0m:[93m23[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m12[0m import { 
+Model } from 
+'mongoose';
+[7m  [0m [91m     
+                 
+~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/email-template.sch
+ema.ts[0m:[93m1[0m
+:[93m45[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m1[0m import { 
+Prop, Schema, 
+SchemaFactory } from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+                 ~~~~
+~~~~~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/email-template.sch
+ema.ts[0m:[93m2[0m
+:[93m26[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m2[0m import { 
+Document } from 
+'mongoose';
+[7m [0m [91m      
+                   
+~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/email.schema.ts[0
+m:[93m1[0m:[93m45
+[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m1[0m import { 
+Prop, Schema, 
+SchemaFactory } from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+                 ~~~~
+~~~~~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/email.schema.ts[0
+m:[93m2[0m:[93m26
+[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m2[0m import { 
+Document } from 
+'mongoose';
+[7m [0m [91m      
+                   
+~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/verification.schem
+a.ts[0m:[93m1[0m:
+[93m45[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m1[0m import { 
+Prop, Schema, 
+SchemaFactory } from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+                 ~~~~
+~~~~~~~~~~~~~~[0m
+[96msrc/email/entiti
+es/verification.schem
+a.ts[0m:[93m2[0m:
+[93m26[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m2[0m import { 
+Document } from 
+'mongoose';
+[7m [0m [91m      
+                   
+~~~~~~~~~~[0m
+[96msrc/user/entitie
+s/registerUser.entity
+.ts[0m:[93m1[0m:[
+93m45[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m1[0m import { 
+Prop, Schema, 
+SchemaFactory } from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+                 ~~~~
+~~~~~~~~~~~~~~[0m
+[96msrc/user/entitie
+s/registerUser.entity
+.ts[0m:[93m2[0m:[
+93m34[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m2[0m import { 
+HydratedDocument } 
+from 'mongoose';
+[7m [0m [91m      
+                     
+      ~~~~~~~~~~[0m
+[96msrc/user/entitie
+s/registerUser.entity
+.ts[0m:[93m3[0m:[
+93m22[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 'src/dto/
+Role/Role.dto' or 
+its corresponding 
+type declarations.
+Found 21 error(s).
+
+
+[7m3[0m import { 
+Role } from 'src/dto/
+Role/Role.dto';
+[7m [0m [91m      
+               ~~~~~~
+~~~~~~~~~~~~~~~~~[0m
+[96msrc/user/user.mo
+dule.ts[0m:[93m3[0
+m:[93m32[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m3[0m import { 
+MongooseModule } 
+from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+    ~~~~~~~~~~~~~~~~~
+~[0m
+[96msrc/user/user.mo
+dule.ts[0m:[93m4[0
+m:[93m34[0m - 
+[91merror[0m[90m 
+TS1149: [0mFile 
+name 'C:/Project/smar
+toffice/backend/src/u
+ser/entities/Register
+User.entity.ts' 
+differs from already 
+included file name 'C
+:/Project/smartoffice
+/backend/src/user/ent
+ities/registerUser.en
+tity.ts' only in 
+casing.
+  The file is in the 
+program because:
+    Imported via './e
+ntities/registerUser.
+entity' from file 'C:
+/Project/smartoffice/
+backend/src/user/user
+.service.ts'
+    Imported via './e
+ntities/RegisterUser.
+entity' from file 'C:
+/Project/smartoffice/
+backend/src/user/user
+.module.ts'
+    Matched by 
+default include 
+pattern '**/*'
+  File is CommonJS 
+module because 'C:/Pr
+oject/smartoffice/bac
+kend/package.json' 
+does not have field 
+"type"
+
+[7m4[0m import { 
+User, UserSchema } 
+from './entities/Regi
+sterUser.entity';
+[7m [0m [91m      
+                     
+      ~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/user/user.
+service.ts[0m:[93m9
+[0m:[93m22[0m
+    [7m9[0m import 
+{ User } from './enti
+ties/registerUser.ent
+ity';
+    [7m [0m [96m  
+                   ~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~[0m
+    File is included 
+via import here.
+[96msrc/user/user.se
+rvice.ts[0m:[93m7[
+0m:[93m29[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'@nestjs/mongoose' 
+or its corresponding 
+type declarations.
+
+[7m7[0m import { 
+InjectModel } from 
+'@nestjs/mongoose';
+[7m [0m [91m      
+                     
+ ~~~~~~~~~~~~~~~~~~[
+0m
+[96msrc/user/user.se
+rvice.ts[0m:[93m10
+[0m:[93m23[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 
+'mongoose' or its 
+corresponding type 
+declarations.
+
+[7m10[0m import { 
+Model } from 
+'mongoose';
+[7m  [0m [91m     
+                 
+~~~~~~~~~~[0m
+[96msrc/user/user.se
+rvice.ts[0m:[93m13
+[0m:[93m33[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 'src/dto/
+admin/GetEmployees.dt
+o' or its 
+corresponding type 
+declarations.
+
+[7m13[0m import { 
+GetEmployeesDto } 
+from 'src/dto/admin/G
+etEmployees.dto';
+[7m  [0m [91m     
+                     
+      ~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~[0m
+[96msrc/user/user.se
+rvice.ts[0m:[93m14
+[0m:[93m31[0m - 
+[91merror[0m[90m 
+TS2307: [0mCannot 
+find module 'src/dto/
+admin/UpdateUser.dto'
+ or its 
+corresponding type 
+declarations.
+
+[7m14[0m import { 
+UpdateUserDto } from 
+'src/dto/admin/Update
+User.dto';
+[7m  [0m [91m     
+                     
+    ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~[0m
+
