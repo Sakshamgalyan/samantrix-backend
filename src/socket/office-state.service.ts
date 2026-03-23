@@ -1,13 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 export interface PlayerState {
-  id: string;
+  id: string; // The user ID from DB
+  socketId: string;
   username: string;
   color: string;
   position: { x: number; y: number; z: number };
   rotation: { y: number };
   floor: number;
   isMoving: boolean;
+  lastMoveTime: number;
+  customization?: {
+    hairStyle: string;
+    accessory: string;
+  };
 }
 
 @Injectable()
@@ -15,51 +21,57 @@ export class OfficeStateService {
   private readonly logger = new Logger(OfficeStateService.name);
   private players = new Map<string, PlayerState>();
 
-  private readonly AVATAR_COLORS = [
-    '#6366f1',
-    '#8b5cf6',
-    '#ec4899',
-    '#f43f5e',
-    '#f97316',
-    '#eab308',
-    '#22c55e',
-    '#14b8a6',
-    '#06b6d4',
-    '#3b82f6',
-    '#a855f7',
-    '#e11d48',
-  ];
-
-  addPlayer(socketId: string, username: string): PlayerState {
-    const color =
-      this.AVATAR_COLORS[Math.floor(Math.random() * this.AVATAR_COLORS.length)];
+  addPlayer(
+    userId: string,
+    socketId: string,
+    username: string,
+    customization?: { color: string; hairStyle: string; accessory: string },
+  ): PlayerState {
+    // Prevent duplicate sessions for same user
+    this.removePlayerByUserId(userId);
 
     const player: PlayerState = {
-      id: socketId,
+      id: userId,
+      socketId,
       username,
-      color,
-      position: { x: 0, y: 0, z: 0 },
+      color: customization?.color || '#6366f1',
+      position: { x: 0, y: 0.1, z: 5 }, // Default spawn pos
       rotation: { y: 0 },
       floor: 1,
       isMoving: false,
+      lastMoveTime: Date.now(),
+      customization: {
+        hairStyle: customization?.hairStyle || 'none',
+        accessory: customization?.accessory || 'none',
+      },
     };
 
     this.players.set(socketId, player);
     this.logger.log(
-      `Player added: ${username} (${socketId}) — total: ${this.players.size}`,
+      `Player added: ${username} (User: ${userId}, Socket: ${socketId}) — total: ${this.players.size}`,
     );
     return player;
   }
 
-  removePlayer(socketId: string): PlayerState | undefined {
+  removePlayerBySocketId(socketId: string): PlayerState | undefined {
     const player = this.players.get(socketId);
     if (player) {
       this.players.delete(socketId);
       this.logger.log(
-        `Player removed: ${player.username} (${socketId}) — total: ${this.players.size}`,
+        `Player removed: ${player.username} (Socket: ${socketId}) — total: ${this.players.size}`,
       );
     }
     return player;
+  }
+
+  removePlayerByUserId(userId: string): void {
+    const player = this.getPlayerByUserId(userId);
+    if (player) {
+      this.players.delete(player.socketId);
+      this.logger.log(
+        `Duplicate session removed for user: ${player.username} (User: ${userId}) — total: ${this.players.size}`,
+      );
+    }
   }
 
   updatePosition(
@@ -68,18 +80,40 @@ export class OfficeStateService {
     rotation: { y: number },
     floor: number,
     isMoving: boolean,
-  ): void {
+  ): boolean {
     const player = this.players.get(socketId);
-    if (player) {
-      player.position = position;
-      player.rotation = rotation;
-      player.floor = floor;
-      player.isMoving = isMoving;
+    if (!player) return false;
+
+    // Delta check to avoid broadcasting stationary updates
+    const dx = player.position.x - position.x;
+    const dy = player.position.y - position.y;
+    const dz = player.position.z - position.z;
+    const dRot = Math.abs(player.rotation.y - rotation.y);
+    
+    // Meaningful change thresholds
+    const positionChanged = (dx * dx + dy * dy + dz * dz) > 0.0001;
+    const rotationChanged = dRot > 0.01;
+    const stateChanged = player.isMoving !== isMoving || player.floor !== floor;
+
+    if (!positionChanged && !rotationChanged && !stateChanged) {
+      return false; // No meaningful change
     }
+
+    player.position = position;
+    player.rotation = rotation;
+    player.floor = floor;
+    player.isMoving = isMoving;
+    player.lastMoveTime = Date.now();
+    
+    return true;
   }
 
-  getPlayer(socketId: string): PlayerState | undefined {
+  getPlayerBySocketId(socketId: string): PlayerState | undefined {
     return this.players.get(socketId);
+  }
+
+  getPlayerByUserId(userId: string): PlayerState | undefined {
+    return Array.from(this.players.values()).find((p) => p.id === userId);
   }
 
   getAllPlayers(): PlayerState[] {

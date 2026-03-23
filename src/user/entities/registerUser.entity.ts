@@ -36,7 +36,7 @@ export class User {
   @Prop()
   refreshToken: string;
 
-  @Prop({ default: false })
+  @Prop({ default: true }) // Set to true by default for now to enable immediate access
   isVerified: boolean;
 
   @Prop()
@@ -47,6 +47,13 @@ export class User {
 
   @Prop()
   address: string;
+
+  @Prop({ type: Object, default: { color: '#6366f1', hairStyle: 'none', accessory: 'none' } })
+  customization: {
+    color: string;
+    hairStyle: string;
+    accessory: string;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

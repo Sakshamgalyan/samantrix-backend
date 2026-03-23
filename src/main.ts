@@ -34,8 +34,8 @@ async function samantrix() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  const port = process.env.PORT ?? 6000;
-  await app.listen(port, '0.0.0.0');
+  const port = process.env.PORT ?? 5001;
+  await app.listen(port);
   logger.log(`Application is running on: ${await app.getUrl()}`);
 }
 samantrix();

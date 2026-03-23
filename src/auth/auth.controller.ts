@@ -12,6 +12,7 @@ import {
   Query,
   Param,
   UseInterceptors,
+  Patch,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
@@ -51,12 +52,14 @@ export class AuthController {
 
     res.cookie('access_token', tokens.access_token, {
       ...cookieOptions,
+      httpOnly: false, // Allow frontend/socket to read access token
       ...(isProduction && { domain: '.galyan.in' }),
       maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       ...cookieOptions,
+      httpOnly: true, // Keep refresh token secure
       ...(isProduction && { domain: '.galyan.in' }),
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -69,7 +72,7 @@ export class AuthController {
       const tokens = await this.authService.registerUser(registerDto);
       this.setCookies(res, tokens);
       this.logger.log(`User ${registerDto.email} registered successfully`);
-      return res.status(201).send({
+      res.status(201).send({
         message: 'User registered successfully',
         status: 'success',
       });
@@ -86,7 +89,7 @@ export class AuthController {
       const tokens = await this.authService.loginUser(loginDto);
       this.setCookies(res, tokens);
       this.logger.log(`User ${loginDto.identifier} logged in successfully`);
-      return res.status(200).send({
+      res.status(200).send({
         message: 'User logged in successfully',
         status: 'success',
       });
@@ -113,7 +116,7 @@ export class AuthController {
     res.clearCookie('refresh_token', clearOptions);
 
     this.logger.log(`User ${userId} logged out successfully`);
-    return res
+    res
       .status(200)
       .send({ message: 'Logged out successfully', status: 'success' });
   }
@@ -131,7 +134,7 @@ export class AuthController {
       const tokens = await this.authService.refreshTokens(refreshToken);
       this.setCookies(res, tokens);
       this.logger.log('Token refreshed successfully');
-      return res.status(200).send({
+      res.status(200).send({
         message: 'Token refreshed successfully',
         status: 'success',
       });
@@ -150,7 +153,7 @@ export class AuthController {
       this.logger.debug(`Fetching profile for user ${req.user.sub}`);
       const user = await this.authService.getProfile(req.user.sub);
       this.logger.log(`Profile fetched successfully for user ${req.user.sub}`);
-      return res.status(200).send({
+      res.status(200).send({
         user,
         message: 'Profile fetched successfully',
         status: 'success',
@@ -195,12 +198,35 @@ export class AuthController {
       this.logger.log(`Updating profile for user ${userId}`);
       await this.authService.updateProfile(userId, updateProfileDto);
       this.logger.log(`Profile updated successfully for user ${userId}`);
-      return res.status(200).send({
+      res.status(200).send({
         message: 'Profile updated successfully',
         status: 'success',
       });
     } catch (error) {
       this.logger.error(`Profile update failed: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('profile')
+  async patchProfile(
+    @Req() req: any,
+    @Body() updateProfileDto: any,
+    @Res() res: Response,
+  ) {
+    try {
+      const userId = req.user.sub;
+      this.logger.log(`Patching profile for user ${userId}`);
+      // If customization is present, we handle it
+      await this.authService.updateProfile(userId, updateProfileDto);
+      this.logger.log(`Profile patched successfully for user ${userId}`);
+      res.status(200).send({
+        message: 'Profile updated successfully',
+        status: 'success',
+      });
+    } catch (error) {
+      this.logger.error(`Profile patch failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -230,7 +256,7 @@ export class AuthController {
       );
 
       this.logger.log(`Password changed successfully for user ${userId}`);
-      return res.status(200).send({
+      res.status(200).send({
         message: 'Password changed successfully',
         status: 'success',
       });
@@ -263,7 +289,7 @@ export class AuthController {
       this.logger.log(
         `Found ${result.data?.length || 0} employees for search query: '${search}'`,
       );
-      return res.status(200).send({
+      res.status(200).send({
         ...result,
         message: 'Employees fetched successfully',
         status: 'success',
@@ -291,7 +317,7 @@ export class AuthController {
       this.logger.log(
         `Employee profile fetched successfully for employeeId: ${employeeId}`,
       );
-      return res.status(200).send({
+      res.status(200).send({
         employee,
         message: 'Employee profile fetched successfully',
         status: 'success',
@@ -389,7 +415,7 @@ export class AuthController {
       this.logger.log(
         `Profile picture uploaded successfully for user ${userId}: ${filename}`,
       );
-      return res.status(200).send({
+      res.status(200).send({
         profilePic: filename,
         message: 'Profile picture uploaded successfully',
         status: 'success',

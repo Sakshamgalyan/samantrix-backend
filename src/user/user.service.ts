@@ -173,6 +173,10 @@ export class UserService {
       updateData.description = updateProfileDto.description;
     if (updateProfileDto.message !== undefined)
       updateData.message = updateProfileDto.message;
+    if (updateProfileDto.customization)
+      updateData.customization = updateProfileDto.customization;
+    if (updateProfileDto.color)
+      updateData.color = updateProfileDto.color;
 
     updateData.updatedOn = new Date();
 

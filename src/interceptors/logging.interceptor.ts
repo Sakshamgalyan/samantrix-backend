@@ -58,9 +58,15 @@ export class LoggingInterceptor implements NestInterceptor {
     // Log body for non-GET requests (with sensitive data sanitization)
     if (method !== 'GET' && body && Object.keys(body).length > 0) {
       const sanitizedBody = this.sanitizeData(body);
-      this.logger.debug(
-        `[${requestId}] Request Body: ${JSON.stringify(sanitizedBody)}`,
-      );
+      try {
+        this.logger.debug(
+          `[${requestId}] Request Body: ${JSON.stringify(sanitizedBody)}`,
+        );
+      } catch (e) {
+        this.logger.debug(
+          `[${requestId}] Request Body: [Circular or unstringifiable]`,
+        );
+      }
     }
 
     return next.handle().pipe(
@@ -68,13 +74,30 @@ export class LoggingInterceptor implements NestInterceptor {
         next: (data) => {
           const delay = Date.now() - now;
           const response = context.switchToHttp().getResponse();
-          const statusCode = response.statusCode;
+          const statusCode = response?.statusCode || 200;
 
-          // Log response size if data is available
-          const dataSize = data ? JSON.stringify(data).length : 0;
+          // Log response size if data is available (with safety check)
+          let dataSize = 0;
+          if (data) {
+            // Check if data is an Express/Nest Response object (often returned by @Res())
+            // Response objects have circles and shouldn't be stringified.
+            const isResponseObject = data && typeof data.status === 'function' && typeof data.send === 'function';
+            
+            if (isResponseObject) {
+              dataSize = -1; // Indicate it's a response object
+            } else {
+              try {
+                dataSize = JSON.stringify(data).length;
+              } catch (e) {
+                dataSize = -2; // Circular
+              }
+            }
+          }
+
+          const sizeLabel = dataSize === -1 ? 'Response object' : dataSize === -2 ? 'Circular' : `${dataSize} bytes`;
 
           this.logger.log(
-            `[${requestId}] Outgoing Response: [${method}] ${url} - Status: ${statusCode} - ${delay}ms - Size: ${dataSize} bytes`,
+            `[${requestId}] Outgoing Response: [${method}] ${url} - Status: ${statusCode} - ${delay}ms - Size: ${sizeLabel}`,
           );
         },
         error: (error) => {
