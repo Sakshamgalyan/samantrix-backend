@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { UserModule } from './user/user.module';
+import { SocketModule } from './socket/socket.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -18,6 +19,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     AuthModule,
     EmailModule,
     UserModule,
+    SocketModule,
     MongooseModule.forRoot(process.env.DATABASE_URL as string),
     MailerModule.forRoot({
       transport: {
